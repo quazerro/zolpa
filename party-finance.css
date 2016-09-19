@@ -1,0 +1,177 @@
+/* general */
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: auto;
+    position: relative;
+    padding-bottom: 2em;
+
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 300;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.exp_text {
+    font-weight: bold;
+    color: #666666;
+    margin: 0;
+}
+
+thead {
+    font-size: 16px;
+    vertical-align: text-top;
+}
+
+th {
+    text-align: center !important;
+}
+
+svg circle.center {
+    fill: #eee;
+}
+
+/* yadcf */
+
+.yadcf-number-slider-filter-wrapper-inner .yadcf-filter-range-number-slider-min-tip-inner,
+.yadcf-number-slider-filter-wrapper-inner .yadcf-filter-range-number-slider-max-tip-inner {
+    position: relative;
+    top: 15px;
+}
+
+.yadcf-filter-reset-button {
+    padding: 0;
+    font-weight: normal;
+}
+
+#yadcf-filter-wrapper--expenses-5 {
+    margin-top: 7px;
+}
+
+#select2-yadcf-filter--expenses-1-container,
+#select2-yadcf-filter--expenses-3-container,
+#yadcf-filter--expenses-4 {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+#yadcf-filter--expenses-1 {
+    max-width: 200px;
+}
+
+#yadcf-filter--expenses-3 {
+    max-width: 80px;
+}
+
+#yadcf-filter--expenses-4 {
+    max-width: 100px;
+}
+
+#yadcf-filter--expenses-min_tip-5 {
+    right: 20%;
+}
+
+#yadcf-filter--expenses-max_tip-5 {
+    right: 100%;
+}
+
+/* header */
+
+#bar, #bar_wrapper {
+    height: 45px;
+    font-size: 15px;
+    background-color: #3e3e40;
+    line-height: 1;
+    text-align: center;
+    color: #FFF;
+    overflow: hidden;
+}
+
+#bar {
+    width: 100%;
+    margin-bottom: 1em;
+}
+
+#bar .page_title {
+    font-size: 125%;
+    font-weight: bold;
+    vertical-align: top;
+}
+
+#bar a {
+    color: #FFF;
+}
+
+#bar span {
+    display: inline-block;
+    padding: 13px 5px;
+}
+
+#bar_wrapper {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+#container {
+    position: relative;
+}
+
+#logo {
+    z-index: 10;
+}
+
+.float_right {
+    float: right;
+}
+.float_left {
+    float: left;
+}
+
+#logo {
+    max-width: 1000px;
+    margin: auto;
+    font-size: 16px;
+}
+
+.colors_legend {
+    list-style: none;
+    text-align: left;
+    margin-bottom: 0px;
+    padding-left: 0px;
+    position: absolute;
+    bottom: 0;
+}
+.colors_legend li {
+    line-height: 33px;
+}
+.colors_legend .color {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    margin-bottom: -10px;
+    border-radius: 50%;
+    margin-right: 0.5em;
+}
+
+body .ui-datepicker {
+    width: 19em;
+}
+#ui-datepicker-div {
+    z-index: 3 !important;
+}
+
+#expenses {
+    width: 100%;
+    overflow: hidden;
+}
+
+#party_select_wrapper .select2-container--default .select2-selection--single {
+    background-color: #eee;
+}
+#party_select_wrapper .select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #333;
+    font-weight: bold;
+    font-size: 125%;
+}

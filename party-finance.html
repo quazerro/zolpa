@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" type="text/css" href="assets/datatables.min.css" />
+    <link rel="stylesheet" type="text/css" href="assets/jquery.dataTables.yadcf.css" />
+    <link rel="stylesheet" type="text/css" href="assets/ui/jquery-ui.min.css" />
+    <link rel="stylesheet" href="assets/bootstrap.min.css" />
+    <link rel="stylesheet" href="assets/select2.min.css" />
+    <link rel="stylesheet" href="party-finance.css" />
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,700,700italic,400italic&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+    <script src="assets/d3.v3.js"></script>
+    <script src="assets/jquery-2.2.3.min.js"></script>
+    <script src="assets/ui/jquery-ui.min.js"></script>
+    <script src="assets/ui/i18n/datepicker-uk.js"></script>
+    <script src="assets/datatables.min.js"></script>
+    <script src="assets/select2.full.min.js"></script>
+    <script src="assets/jquery.dataTables.yadcf.js"></script>
+    <script src="party-finance.js"></script>
+    <title>Золото партій</title>
+</head>
+
+
+<body>
+
+<div id="container">
+<div id="bar">
+    <div id="bar_wrapper">
+        <div class="float_left">
+            <a href="http://www.chesno.org/">
+                <span class="spare">продукт від</span><img src="http://www.chesno.org/static/img/chesno-logo-top.png" alt="Chesno.org">
+            </a>
+        </div>
+
+        <a href="#"><span class="page_title">Золото партій <sup>0.1</sup></span></a>
+
+        <a href="#" id="info_button" data-toggle="modal" data-target=".info-modal-lg" title="Інформація"></a>
+
+        <sup id="extra_info"></sup>
+
+        <div class="float_right">
+            <a href="http://www.facebook.com/chesno.movement"><img src="http://www.chesno.org/static/img/facebook.png" alt="Facebook"></a>
+
+            <a href="http://twitter.com/chesno_2012"><img src="http://www.chesno.org/static/img/twit.png" alt="Twitter"></a>
+
+            <span class="spare">
+                <a href="http://www.chesno.org/background">Більше про ЧЕСНО</a>
+            </span>
+        </div>
+    </div>
+</div>
+</div>
+
+<div id="logo">
+<img src="assets/images/index.png" alt="">
+<p>
+«Золото партій» - новий інструмент від ЧЕСНО, що візуалізує партійні звіти.
+Поки ми зробили для Вас передвиборчі звіти за 2014 р. тих партій, які зрештою потрапили до парламенту.
+На підході нові, набагато більш детальні партійні звіти, які скоро почне отримувати та оприлюднювати Національне агентство з питань запобігання корупції – вони також з’являться на цій сторінці у зручному для Вас форматі.
+Наразі ж ми просимо трохи потестувати цю альфа-версію інструменту і повідомити нам чого не вистачає, що краще переробити, а що обов’язково залишити як є.
+</p>
+<br>
+</div>
+
+<div id="party_select_wrapper">
+<select id="party_select"></select>
+</div>
+
+<div class="visualization" style="width: 900px; margin: auto;">
+    <div class="svg" style="float:left"></div>
+    <div class="legend_wrapper" style="width:300px; height:500px; position:relative; float:right">
+        <div class="image"></div>
+        <div class="legendtext" style="margin-top:5px"></div>
+        <ul class="colors_legend"></ul>
+    </div>
+</div>
+
+<table id="expenses" class="display"></table>
+
+</body>
+</html>
