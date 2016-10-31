@@ -16,79 +16,88 @@ var DATA_NESTED,
 	PARTITION = d3.layout.partition()
 		.sort(null)
 		.size([2 * Math.PI, RADIUS])
-		.value(function(d) { return d.payment_sum; }),
+		.value(function(d) { return d.sum; }),
 
 	ARC = d3.svg.arc()
-		.startAngle(function(data_group) {
-			return data_group.x;
+		.startAngle(function(d) {
+			return d.x;
 		})
-		.endAngle(function(data_group) { return data_group.x + data_group.dx ; })
+		.endAngle(function(d) { return d.x + d.dx ; })
 		.padAngle(.01).padRadius(RADIUS / 3)
-		.innerRadius(function(data_group) { return RADIUS / 3 * data_group.depth; })
-		.outerRadius(function(data_group) { return RADIUS / 3 * (data_group.depth + 1) - 1; });
+		.innerRadius(function(d) { return RADIUS / 3 * d.depth; })
+		.outerRadius(function(d) { return RADIUS / 3 * (d.depth + 1) - 1; });
 
 var EXPENSE_CODES = {
-	"1000": "Сума витрат виборчого фонду (1100 + 1200 + 1300 + 1400)",
-	"1100": "Виготовлення матеріалів передвиборної агітації (1110 + 1120 + 1130 + 1140 + 1150)",
-	"1110": "Виготовлення друкованих матеріалів",
-	"1120": "Виготовлення відеозаписів",
-	"1130": "Виготовлення аудіозаписів",
-	"1140": "Виготовлення предметів, матеріалів (сувенірів, канцтоварів тощо), що містять символіку партії",
-	"1150": "Придбання канцтоварів, паперу, інших предметів і матеріалів для виготовлення матеріалів передвиборної агітації",
-	"1200": "Використання засобів масової інформації (1210 + 1220):",
-	"1210": "Оплата ефірного часу (1211 + 1212)",
-	"1211": "Оплата ефірного часу на телебаченні",
-	"1212": "Оплата ефірного часу на радіо",
-	"1220": "Публікування агітаційних матеріалів у друкованих засобах масової інформації",
-	"1300": "Інші послуги, пов’язані з проведенням передвиборної агітації (1310 + 1320 + 1330 + 1340 + 1350 + 1360):",
-	"1310": "Транспортні послуги для реалізації заходів передвиборної агітації",
-	"1320": "Оренда будинків і приміщень для проведення публічних заходів",
-	"1330": "Оренда обладнання та технічних засобів для ведення передвиборної агітації",
-	"1340": "Оренда приміщень усіх форм власності для проведення публічних заходів",
-	"1350": "Виготовлення (оренда) рекламних щитів",
-	"1360": "Послуги зв’язку (1361 + 1362)",
-	"1361": "Послуги електричного зв’язку",
-	"1362": "Послуги поштового зв’язку",
-	"1400": "Інші витрати на передвиборну агітацію (зокрема розміщення агітації на носіях зовнішньої реклами)",
+	"3.1":"Виготовлення агітаційних матеріалів (3.1.1 + 3.1.2 + 3.1.3 + 3.1.4 + 3.1.5)",
+	"3.1.1":"Друкованих матеріалів (плакатів, листівок, буклетів та інших агітаційних матеріалів)",
+	"3.1.2":"Відеозаписів",
+	"3.1.3":"Аудіозаписів",
+	"3.1.4":"Предметів, матеріалів (сувенірів, канцтоварів тощо)",
+	"3.1.5":"Придбання канцтоварів, паперу, інших предметів і матеріалів",
+	"3.2":"Використання засобів масової інформації (3.2.1 + 3.2.2 + 3.2.3)",
+	"3.2.1":"Оплата ефірного часу на ТБ",
+	"3.2.2":"Оплата ефірного часу на радіо",
+	"3.2.3":"Публікування матеріалів у друкованих засобах масової інформації",
+	"3.3":"Інші послуги (3.3.1 + 3.3.2 + 3.3.3 + 3.3.4 + 3.3.5 + 3.3.6 + 3.3.7)",
+	"3.3.1":"Транспортні послуги",
+	"3.3.2":"Оренда будинків і приміщень",
+	"3.3.3":"Оренда обладнання та технічних засобів",
+	"3.3.4":"Виготовлення (оренда) агітаційних наметів",
+	"3.3.5":"Послуги зв’язку",
+	"3.3.6":"Комунальні послуги",
+	"3.3.7":"Програмне забезпечення",
+	"3.4":"Витрати на зовнішню рекламу (3.4.1+3.4.2)",
+	"3.4.1":"Виготовлення (оренда) рекламних щитів",
+	"3.4.2":"Витрати на розміщення зовнішньої реклами",
+	"3.5":"Оплата праці (3.5.1 + 3.5.2)",
+	"3.5.1":"Заробітна плата",
+	"3.5.2":"Гонорари, в точу числі за надані консультаційні послуги",
+	"3.6":"Сплата податків",
+	"3.6.1":"Податок на доходи (із зарплати)",
+	"3.6.2":"Сплата ЄСВ",
+	"3.6.3":"Військовий збір",
+	"3.6.4":"Інші податки",
+	"3.7":"Інші витрати",
+	"3.8":"Переведення коштів на інші рахунки партії чи кандидатів",
 	};
 
 
-function rename_nested(data_group_input) {
-	var data_group = data_group_input;
-	if (data_group.key !== undefined) {
-		data_group.name = data_group.key;
-		delete data_group.key;
+function rename_nested(data_input) {
+	var d = data_input;
+	if (d.key !== undefined) {
+		d.name = d.key;
+		delete d.key;
 	}
 
-	if (typeof data_group.values !== "undefined") {
-		data_group.children = jQuery.each(data_group.values, function(index, value) {
+	if (typeof d.values !== "undefined") {
+		d.children = jQuery.each(d.values, function(index, value) {
 			var subreturn = rename_nested(value);
 			return subreturn;
 		});
-		delete data_group.values;
+		delete d.values;
 	}
-	return data_group;
+	return d;
 }
 
 
-function append_sums(data_group) {
+function append_sums(d) {
 	var payment_total = 0;
-	if (typeof data_group.children !== "undefined") {
-		data_group.children = jQuery.each(data_group.children, function(index, value) {
+	if (typeof d.children !== "undefined") {
+		d.children = jQuery.each(d.children, function(index, value) {
 			var result = append_sums(value);
 			payment_total += float(result[1]);
 			return result[0];
 		});
-		data_group.payment_sum = payment_total;
+		d.sum = payment_total;
 	} else {
-		data_group.payment_sum = float(data_group.payment_sum);
+		d.sum = float(d.sum);
 	}
-	return [data_group, payment_total || data_group.payment_sum];
+	return [d, payment_total || d.sum];
 }
 
 
-function calculate_fill(data_group) {
-	var local_data = data_group;
+function calculate_fill(d) {
+	var local_data = d;
 	var fill;
 	while (local_data.depth > 1) {
 		local_data = local_data.parent;
@@ -96,14 +105,14 @@ function calculate_fill(data_group) {
 	if (local_data.depth === 0) {
 		local_data = local_data.children[0];
 	}
-	if (local_data.name && local_data.name.length === 4) {
+	if (local_data.name && (local_data.name.length === 3 || local_data.name.length === 5)) {
 		fill = switch_color(local_data.name);
-	} else if (local_data.parent.name.length === 4) {
+	} else if (local_data.parent.name.length === 3 || local_data.parent.name.length === 5) {
 		fill = switch_color(local_data.parent.name);
 	} else {
 		fill = switch_color(local_data.parent.parent.name);
 	}
-	fill.l = luminance(fill, data_group.payment_sum);
+	fill.l = luminance(fill, d.sum);
 	return fill;
 }
 
@@ -111,16 +120,16 @@ function calculate_fill(data_group) {
 function switch_color(code) {
 	var fill;
 	switch (code) {
-	case "1211":
+	case "3.3.2":
 		fill = d3.lab(COLORS[0]);
 		break;
-	case "1212":
+	case "3.2.1":
 		fill = d3.lab(COLORS[1]);
 		break;
-	case "1400":
+	case "3.1.1":
 		fill = d3.lab(COLORS[2]);
 		break;
-	case "1110":
+	case "3.5.1":
 		fill = d3.lab(COLORS[3]);
 		break;
 	default:
@@ -150,8 +159,8 @@ function float(value) {
 }
 
 
-function key_function(data_group) {
-	var keys = [], current = data_group;
+function key_function(d) {
+	var keys = [], current = d;
 	while (current.depth) {
 		keys.push(current.id || current.name);
 		current = current.parent;
@@ -249,12 +258,12 @@ function draw_table(input_data){
 			},
 			data: input_data,
 			columns: [
-				{ title: "Рахунок партії", data: 'source_bank_account' },
-				{ title: "Адресат платежу", data: 'target_entity' },
+				{ title: "Рахунок партії", data: 'source_bank_account_number' },
+				{ title: "Адресат платежу", data: 'target_legal_personality' },
 				{ title: "Призначення платежу", data: 'purpose' },
 				{ title: "Код витрат", data: 'code' },
 				{ title: "Дата", data: 'date' },
-				{ title: "Сума", data: 'payment_sum' },
+				{ title: "Сума", data: 'sum' },
 			],
 		});
 }
@@ -287,11 +296,11 @@ function filter(datatable) {
 
 function draw_legend() {
 	var colors_descriptions = [
+		"Оренда приміщень",
 		"Телебачення",
-		"Радіо",
-		"Зовнішня реклама",
 		"Виготовлення друкованої агітації",
-		"Інші витрати"
+		"Зарплата",
+		"Решта витрат"
 	];
 
 	var legend_list = jQuery(".colors_legend");
@@ -310,8 +319,8 @@ function draw_legend() {
 
 
 // ---- zoom ----
-function zoomIn(data_group) {
-	var data = data_group;
+function zoomIn(d) {
+	var data = d;
 	if (!data.children){
 		if (data.parent) {
 			data = data.parent;
@@ -323,11 +332,11 @@ function zoomIn(data_group) {
 }
 
 
-function zoomOut(data_group) {
-	if (!data_group.parent){
+function zoomOut(d) {
+	if (!d.parent){
 		return;
 	}
-	zoom(data_group.parent);
+	zoom(d.parent);
 }
 
 
@@ -346,7 +355,7 @@ $(document).ready(function() {
 		DATA_NESTED = d3.nest()
 			.key(function(d) { return d.account_party; })
 			.key(function(d) { return d.code; })
-			.key(function(d) { return d.target_entity; })
+			.key(function(d) { return d.target_legal_personality; })
 			.entries(root);
 
 		DATA_NESTED = $.each(DATA_NESTED, function(index, value) {
